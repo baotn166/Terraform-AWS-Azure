@@ -13,5 +13,6 @@ RUN cd /usr/local/bin && \
 WORKDIR /automation
 
 COPY run.sh .
+RUN chmod +x run.sh
 
 ENV PATH="/automation:$PATH"
