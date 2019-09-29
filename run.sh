@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 function inputAwsCredentials() {
     read -p "AWS Access Key Id: " accessKeyId
@@ -23,10 +23,9 @@ function enter() {
     while [ $counter -le $times ]
     do
         echo -ne '\n'
-        ((counter++))
+        counter=$(( $counter + 1 ))
     done
 }
-
 
 function main() {
     # Input AWS credentials
@@ -39,6 +38,8 @@ function main() {
 
     # Input S3 bucket
     local s3Bucket=$(inputS3Bucket)
+
+    eval "export $awsCredentialsEnv $instanceIdEnv $s3Bucket"
 }
 
 main $@
