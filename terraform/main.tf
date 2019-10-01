@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "ap-southeast-1"
+  region = "${var.region}"
   access_key = "${var.aws_access_key_id}"
   secret_key = "${var.aws_secret_access_key}"
 }
@@ -53,9 +53,19 @@ resource "aws_volume_attachment" "temp_volume_attachment" {
 }
 
 
-#3
+#3 Create an S3 bucket using date/time stamp to ensure a unique S3 bucket name.
+locals {
+  timestamp = "${timestamp()}"
+  timestamp_sanitized = "${replace("${local.timestamp}", "/[-| |T|Z|:]/", "")}"
 
-#4
+}
+resource "aws_s3_bucket" "s3_bucket" {
+  #formatdate(spec, timestamp)
+  bucket = "${local.timestamp_sanitized}"
+  acl    = "private"
+}
+
+#4 Copy all content from the volumes of the temporary ec2 instance to the S3 bucket.
 
 #5
 
