@@ -15,3 +15,13 @@ resource "aws_ebs_snapshot" "snapshot_ebs_volume" {
   count     = "${length(split(" ", data.external.all_ebs_volumes.result.volumes))}"
   volume_id = "${element(split(" ", data.external.all_ebs_volumes.result.volumes), count.index)}"
 }
+
+#2
+
+#3
+
+#4
+
+#5
+
+#6
