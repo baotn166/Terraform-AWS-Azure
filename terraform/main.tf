@@ -6,9 +6,12 @@ provider "aws" {
 
 data "external" "all_ebs_volumes" {
   program = ["/bin/bash", "terraform/scripts/get-all-volumes.sh"]
+  query = {
+    instance_id = "${var.instance_id}"
+  }
 }
 
-# resource "aws_ebs_snapshot" "ebs_volume" {
-#   count     = "${length(data.external.all_ebs_volumes.result.volumes)}"
-#   volume_id = "${data.external.all_ebs_volumes.result.volumes.*.id[count.index]}"
-# }
+resource "aws_ebs_snapshot" "snapshot_ebs_volume" {
+  count     = "${length(split(" ", data.external.all_ebs_volumes.result.volumes))}"
+  volume_id = "${element(split(" ", data.external.all_ebs_volumes.result.volumes), count.index)}"
+}
