@@ -1,3 +1,5 @@
 .terraform
 terraform.*
 values.tfvars
+.vagrant
+vagrantfile
