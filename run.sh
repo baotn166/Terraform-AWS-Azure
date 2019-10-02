@@ -55,6 +55,8 @@ function main() {
     terraform init terraform
     terraform plan -var-file=values.tfvars terraform
     terraform apply -var-file=values.tfvars -auto-approve terraform
+    terraform state rm aws_s3_bucket.s3_bucket
+    terraform destroy -var-file=values.tfvars -auto-approve terraform
 }
 
 main $@
