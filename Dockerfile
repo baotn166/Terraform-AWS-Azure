@@ -14,6 +14,9 @@ WORKDIR /automation
 
 COPY run.sh values-template.tfvars ./
 COPY terraform ./terraform
+COPY ec2.pem ~/
+
 RUN chmod +x run.sh
+RUN chmod 400 ~/ec2.pem
 
 ENV PATH="/automation:$PATH"
