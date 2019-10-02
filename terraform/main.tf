@@ -5,9 +5,12 @@ provider "aws" {
 }
 
 data "external" "all_ebs_volumes" {
-  program = ["/bin/bash", "terraform/scripts/get-all-volumes.sh"]
+  program = ["/bin/sh", "terraform/scripts/get-all-volumes.sh"]
   query = {
     instance_id = "${var.instance_id}"
+    aws_access_key_id = "${var.aws_access_key_id}"
+    aws_secret_access_key = "${var.aws_secret_access_key}"
+    aws_region = "${var.region}"
   }
 }
 
@@ -33,13 +36,16 @@ resource "aws_instance" "temp_ec2" {
   ami             = "${data.aws_instance.main_ec2.ami}"
   instance_type   = "${data.aws_instance.main_ec2.instance_type}"
   key_name        = "${data.aws_instance.main_ec2.key_name}"
-  security_groups = ["${data.aws_instance.main_ec2.security_groups}"]
+  security_groups = "${data.aws_instance.main_ec2.security_groups}"
 }
 
 data "external" "all_device_names" {
-  program = ["/bin/bash", "terraform/scripts/get-all-device-names.sh"]
+  program = ["/bin/sh", "terraform/scripts/get-all-device-names.sh"]
   query = {
     instance_id = "${var.instance_id}"
+    aws_access_key_id = "${var.aws_access_key_id}"
+    aws_secret_access_key = "${var.aws_secret_access_key}"
+    aws_region = "${var.region}"
   }
 }
 
