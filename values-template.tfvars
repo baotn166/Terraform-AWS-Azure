@@ -1,5 +1,5 @@
-#instance_id="i-0ef32677897521683"
-instance_id="i-0a373f77364f1731a"
+instance_id="i-0ef32677897521683"
+#instance_id="i-0a373f77364f1731a"
 aws_access_key_id=""
 aws_secret_access_key=""
 region = ""

@@ -32,6 +32,14 @@ resource "aws_s3_bucket" "s3_bucket" {
 
 #4 Copy all content from the volumes of the temporary ec2 instance to the S3 bucket.
 
+resource "null_resource" "mount_volume" {
+  provisioner "local-exec" {
+        command = "bash terraform/scripts/login-ec2-instance.sh ${var.instance_id} ${var.region} ${local.timestamp_sanitized}"
+    }
+  triggers = {
+        build_number = "${timestamp()}"
+    }
+}
 #5
 
 #6
