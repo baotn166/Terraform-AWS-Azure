@@ -76,7 +76,7 @@ resource "aws_s3_bucket" "s3_bucket" {
 
 resource "null_resource" "mount_volume" {
   provisioner "local-exec" {
-    command = "bash terraform/scripts/login-ec2-instance.sh ${aws_instance.temp_ec2.id} ${var.region} ${aws_s3_bucket.s3_bucket.bucket}"
+    command = "/bin/sh terraform/scripts/login-ec2-instance.sh ${aws_instance.temp_ec2.id} ${var.region} ${aws_s3_bucket.s3_bucket.bucket}"
   }
   triggers = {
     build_number = "${timestamp()}"

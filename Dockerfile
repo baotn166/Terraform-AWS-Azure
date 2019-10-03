@@ -12,11 +12,10 @@ RUN cd /usr/local/bin && \
 
 WORKDIR /automation
 
-COPY run.sh values-template.tfvars ./
+COPY run.sh values-template.tfvars ec2.pem ./
 COPY terraform ./terraform
-COPY ec2.pem ~/
 
 RUN chmod +x run.sh
-RUN chmod 400 ~/ec2.pem
+RUN cp ec2.pem ~/ && chmod 400 ~/ec2.pem
 
 ENV PATH="/automation:$PATH"
