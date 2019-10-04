@@ -22,6 +22,11 @@ function inputS3Bucket() {
     echo "S3_BUCKET=$s3Bucket"
 }
 
+function inputInstanceUser() {
+    read -p "Instance user: " instanceUser
+    echo "INSTANCE_USER=$instanceUser"
+}
+
 function enter() {
     local times=$1
     local counter=1
@@ -42,6 +47,10 @@ function main() {
     # Input Instance id
     local instanceIdEnv=$(inputInstanceId)
     export $instanceIdEnv
+
+    # Input Instance user
+    local instanceUserEnv=$(inputInstanceUser)
+    export $instanceUserEnv
 
     # Input S3 bucket
     # local s3Bucket=$(inputS3Bucket)

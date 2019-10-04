@@ -13,3 +13,6 @@ variable "region" {
   default = ""
 }
 
+variable "instance_user" {
+  default = ""
+}

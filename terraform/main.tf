@@ -55,6 +55,7 @@ resource "aws_volume_attachment" "temp_volume_attachment" {
   device_name = "${element(split(" ", data.external.all_device_names.result.devices), count.index)}"
   volume_id   = "${element(aws_ebs_volume.restored_ebs_volume.*.id, count.index)}"
   instance_id = "${aws_instance.temp_ec2.id}"
+  skip_destroy = true
   depends_on  = ["aws_ebs_volume.restored_ebs_volume","aws_instance.temp_ec2"]
 }
 
@@ -76,13 +77,10 @@ resource "aws_s3_bucket" "s3_bucket" {
 
 resource "null_resource" "mount_volume" {
   provisioner "local-exec" {
-    command = "/bin/sh terraform/scripts/login-ec2-instance.sh ${aws_instance.temp_ec2.id} ${var.region} ${aws_s3_bucket.s3_bucket.bucket} ${var.aws_access_key_id} ${var.aws_secret_access_key} ${var.region} '${data.external.all_device_names.result.devices}'"
+    command = "/bin/sh terraform/scripts/login-ec2-instance.sh ${var.instance_user} ${aws_instance.temp_ec2.id} ${var.region} ${aws_s3_bucket.s3_bucket.bucket} ${var.aws_access_key_id} ${var.aws_secret_access_key} ${var.region} '${data.external.all_device_names.result.devices}'"
   }
   triggers = {
     build_number = "${timestamp()}"
   }
   depends_on = ["aws_s3_bucket.s3_bucket"]
 }
-#5
-
-#6
