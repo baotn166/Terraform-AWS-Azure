@@ -32,11 +32,28 @@ resource "aws_ebs_volume" "restored_ebs_volume" {
   depends_on        = ["aws_ebs_snapshot.snapshot_ebs_volume"]
 }
 
+resource "tls_private_key" "temp_key" {
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
+
+resource "aws_key_pair" "generated_key" {
+  key_name   = "generated_temp_key"
+  public_key = "${tls_private_key.temp_key.public_key_openssh}"
+}
+
+resource "local_file" "ec2_pem" {
+  content         = "${tls_private_key.temp_key.private_key_pem}"
+  filename        = "ec2.pem"
+  file_permission = "0400"
+}
+
 resource "aws_instance" "temp_ec2" {
   ami             = "${data.aws_instance.main_ec2.ami}"
   instance_type   = "${data.aws_instance.main_ec2.instance_type}"
-  key_name        = "${data.aws_instance.main_ec2.key_name}"
+  key_name        = "${aws_key_pair.generated_key.key_name}"
   security_groups = "${data.aws_instance.main_ec2.security_groups}"
+  depends_on      = ["aws_key_pair.generated_key"]
 }
 
 data "external" "all_device_names" {
